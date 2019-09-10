@@ -1,1 +1,1 @@
-Aqui irán las cosas de EDA
+Directorio relacionado con la asignatura de EDA

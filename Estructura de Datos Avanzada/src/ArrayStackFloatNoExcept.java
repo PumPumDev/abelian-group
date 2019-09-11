@@ -12,4 +12,24 @@ public class ArrayStackFloatNoExcept {
     public boolean isEmpty(){
         return this.top == 0;
     }
+
+    public int size(){
+        return top;
+    }
+
+    public float top(){
+        return s[top-1];
+    }
+
+    public void push(float e){
+        s[top] = e;
+        top++;
+    }
+
+    public float pop(){
+        top--;
+        return s[top];
+    }
+
+
 }

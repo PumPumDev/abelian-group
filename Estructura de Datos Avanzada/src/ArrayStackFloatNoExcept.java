@@ -18,17 +18,26 @@ public class ArrayStackFloatNoExcept {
     }
 
     public float top(){
-        return s[top-1];
+        if (!isEmpty()) {
+            return s[top - 1];
+        }
+        System.out.println("The stack is empty");
+        return 0;
     }
 
     public void push(float e){
-        s[top] = e;
-        top++;
+            s[top] = e;
+            top++;
+
     }
 
     public float pop(){
-        top--;
-        return s[top];
+        if (!isEmpty()) {
+            top--;
+            return s[top];
+        }
+        System.out.println("The stack is empty");
+        return 0;
     }
 
 

@@ -39,7 +39,7 @@ public class LinkedStackFloatNoExcept {
     }
 
     public float top(){
-        if(!top.isEmpty()){
+        if(!isEmpty()){
             return top.getElement();
         }
         System.out.println("The stack is empty");
@@ -55,10 +55,14 @@ public class LinkedStackFloatNoExcept {
     }
 
     public float pop(){
-        float elem = top.getElement();
-        top = top.getNext();
-        size--;
-        return elem;
+        if (!isEmpty()) {
+            float elem = top.getElement();
+            top = top.getNext();
+            size--;
+            return elem;
+        }
+        System.out.println("The stack is empty");
+        return 0;
     }
 
     public void push(float elem){

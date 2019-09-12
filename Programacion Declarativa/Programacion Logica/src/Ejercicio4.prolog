@@ -24,5 +24,6 @@ suma(X,s(Y),s(Z)) :-
 producto(X,0,0).
 
 % TODO Problema: Conseguir el valor de la variable V
-producto(X,s(Y),suma(Z,X,V)) :-
-    producto(X,Y,Z).
+producto(X,s(Y),V) :-
+    producto(X,Y,Z),
+    suma(Z,X,V).

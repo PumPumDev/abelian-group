@@ -15,7 +15,7 @@ El programa podr´a usar el predicado suma deﬁnido en el Cuadro 4 para sumar n
 suma(X,0,X).
 
 suma(X,s(Y),s(Z)) :-
-    suma(X.Y,Z).
+    suma(X,Y,Z).
 
 %Definimos ahora el producto
 

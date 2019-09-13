@@ -21,7 +21,7 @@ suma(X,s(Y),s(Z)) :-
 
 % producto(?X,?Y,?Z): cierto si Z es el producto de X e Y
 
-producto(X,0,0).
+producto(_,0,0).
 
 % TODO Problema: Conseguir el valor de la variable V
 producto(X,s(Y),V) :-

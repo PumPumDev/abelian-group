@@ -1,3 +1,5 @@
+package estructurasLineales;
+
 public class ArrayStackFloatNoExcept {
     private int top;
     private int MAX_SIZE;

@@ -17,7 +17,7 @@ Contenidos
 .
 ├── config
 │   ├── Estructuras de Datos Avanzadas
-|	  |		└── Estructuras Basicas: Pilas, Listas y Colas
+|	  |		└── Estructuras Basicas: Pilas, estructurasLineales y Colas
 │   └── Programación Declarativa
 |			└── Programación Lógica
 ├── README.md

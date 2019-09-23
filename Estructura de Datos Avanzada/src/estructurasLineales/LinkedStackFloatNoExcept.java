@@ -1,3 +1,5 @@
+package estructurasLineales;
+
 public class LinkedStackFloatNoExcept {
     private class Node{
         private float element;

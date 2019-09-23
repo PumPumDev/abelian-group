@@ -1,3 +1,5 @@
+package estructurasLineales;
+
 public class DoubleLinkedList<E> implements List<E>{
 
 
@@ -76,7 +78,7 @@ public class DoubleLinkedList<E> implements List<E>{
         return newNode;
     }
 
-    public Position<E>  add(int index, E value) {
+    public Position<E> add(int index, E value) {
         return null;
     }
 

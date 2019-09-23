@@ -1,3 +1,5 @@
+package estructurasLineales;
+
 public interface List<E> {
 
     int size();

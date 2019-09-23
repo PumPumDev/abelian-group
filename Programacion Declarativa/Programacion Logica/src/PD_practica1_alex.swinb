@@ -1,0 +1,618 @@
+<div class="notebook">
+
+<div class="nb-cell html" name="htm1">
+<h3>PROGRAMACIÓN LÓGICA</h3>
+<h4>3º GRADO EN INGENIERÍA INFORMÁTICA, URJC</h4>
+<h4><strong> PRÁCTICA DE PROLOG Nº1: Primeros contactos con el lenguaje </strong></h4>
+</div>
+
+<div class="nb-cell html" name="htm2">
+<h4><strong>1. El predicado de unificación </strong></h4>
+
+Las siguientes consultas contienen el
+predicado de unificación de Prolog, <code>"="</code>, y 
+el de no unificación, <code>"\="</code>. Indique para cada una de 
+ellas, sin usar el intérprete, cuál sería la respuesta de Prolog.
+A continuación compruebe sus respuestas ejecutando las consultas 
+(flecha azul de la derecha).
+</div>
+
+<div class="nb-cell query" name="q1">
+f(X, g(b,c)) = f(Z, g(Y,c)).
+</div>
+
+<div class="nb-cell query" name="q2">
+f(X, g(b,X)) \= f(c, g(Y,d)).
+</div>
+
+<div class="nb-cell query" name="q3">
+p(X, f(Y), g(X)) = p(Z, f(g(a)), g(a)).
+</div>
+
+<div class="nb-cell html" name="htm4">
+Aunque SWI Prolog no siempre hace explícita la 
+composición de sustituciones (observe que la respuesta 
+a la consulta anterior es <code>X=Z, Z=a</code> en lugar de 
+<code>X=a, Z=a</code>), internamente sí que está haciendo la 
+composición, como demuestra la consulta siguiente.
+</div>
+
+<div class="nb-cell query" name="q7">
+p(X, f(Y), g(X)) = p(Z, f(g(a)), g(a)), X=d.
+</div>
+
+<div class="nb-cell html" name="htm6">
+En efecto, cuando Prolog llega a <code>X=d</code> lo que realmente 
+hace es <code>a=d</code>, y de ahí la respuesta obtenida.
+</div>
+
+<div class="nb-cell query" name="q4">
+f(s(s(s(0))),Y,Z) = f(s(X),0,s(X)*Y).
+</div>
+
+<div class="nb-cell query" name="q5">
+p(X,f(Y)) = p(Y,X).
+</div>
+
+<div class="nb-cell html" name="htm3">
+La respuesta positiva obtenida en el último ejemplo muestra que el
+algoritmo de unificación utilizado por Prolog <i>no</i> realiza el 
+test de ocurrencia (por razones de eficiencia). Haga la misma 
+consulta con el predicado de unificación que sí incorpora el 
+test de ocurrencia:
+</div>
+
+<div class="nb-cell query" name="q6">
+unify_with_occurs_check(p(X,f(Y)), p(Y,X)).
+</div>
+
+<div class="nb-cell html" name="htm5">
+<h4><strong> 2. Suma de números naturales</strong></h4>
+
+
+Considere el predicado lógico puro para la suma de números naturales 
+discutido en los apuntes, <code>"suma/3"</code>, cuya implementación
+se recuerda a continuación:
+</div>
+
+<div class="nb-cell program" name="p1">
+% suma(?X, ?Y, ?Z)
+% cierto si Z es la suma de X e Y.
+% programa lógico puro (no utiliza la aritmética de Prolog)
+
+suma(X,0,X).
+suma(X,s(Y),s(Z)) :- 
+    suma(X,Y,Z).
+</div>
+
+<div class="nb-cell html" name="htm7">
+<h5> <strong>2.1. Corrección de errores sintácticos </strong></h5>
+  Haga la consulta
+</div>
+
+<div class="nb-cell query" name="q8">
+suma(0,0,Cuanto).
+</div>
+
+<div class="nb-cell html" name="htm11">
+y compruebe así que el código 
+  facilitado contiene dos errores sintácticos típicos. ¿Cuáles son?
+    Corrija ambos errores modificando el código facilitado más arriba.
+</div>
+
+<div class="nb-cell html" name="htm8">
+<h5> <strong>2.2. Corrección de errores semánticos </strong></h5>
+
+  Compruebe que ha corregido correctamente los errores sintácticos
+volviendo a hacer la misma consulta.
+</div>
+
+<div class="nb-cell query" name="q10">
+suma(0,0,Cuanto).
+</div>
+
+<div class="nb-cell html" name="htm12">
+Verá, sin embargo, que
+ahora aparece el aviso <code> Singleton variables: [X,C]</code> y que  
+la respuesta obtenida es <code>true</code> en lugar de
+<code>Cuantos = 0</code>, que sería la respuesta correcta. 
+¿Qué está ocurriendo? Corrija de nuevo el código y vuelva a ejecutar 
+la misma consulta, comprobando que el aviso desaparece y que ahora obtiene la respuesta <code>Cuantos = 0</code>.
+</div>
+
+<div class="nb-cell query" name="q9">
+suma(0,0,Cuanto).
+</div>
+
+<div class="nb-cell html" name="htm10">
+<h5> <strong>2.3. Realización de algunas consultas </strong></h5>
+</div>
+
+<div class="nb-cell html" name="htm14">
+En lo que sigue se practica con el uso del predicado <code>suma/3</code> 
+propuesto más arriba. Recuerde que la implementación está basada en 
+programación lógica “pura”, sin utilizar la aritmética de Prolog, y que 
+por lo tanto los números naturales deben representarse mediante la 
+constante 0 (cero) y los términos compuestos s(0) (uno), s(s(0)) (dos), 
+s(s(s(0))) (tres), etc. Si intenta utilizar el predicado suma de forma
+distinta, haciendo por ejemplo la consulta
+?- suma(1, 2, X).
+verá que el resultado es false. En efecto: la cláusula anterior no unifica con la cabeza de
+ninguna de las dos cláusulas que conforman el programa, puesto que la constante 2 no
+unifica ni con la constante 0 ni con el término compuesto s(Y).
+</div>
+
+<div class="nb-cell html" name="htm9">
+Antes de ejecutar las consultas que se proporcionan a continuación,
+indique qué se pretende averiguar con ellas y qué respuesta(s) cree
+que deberían producir. Por ejemplo:
+</div>
+
+<div class="nb-cell html" name="htm13">
+consulta 1: ¿Existen naturales X que sean la suma de 1 más 1? ¿Cuáles? Respuesta esperada: X=s(s(0))
+</div>
+
+<div class="nb-cell query" name="q11">
+suma(s(0), s(0), X).
+</div>
+
+<div class="nb-cell html" name="htm15">
+consulta 2: Resta 3 - 1 = 2
+</div>
+
+<div class="nb-cell query" name="q12">
+suma(s(0), Y, s(s(s(0)))).
+</div>
+
+<div class="nb-cell html" name="htm16">
+consulta 3: existe la resta entre 3 -1 ?
+</div>
+
+<div class="nb-cell query" name="q13">
+suma(s(0), _, s(s(s(0)))).
+</div>
+
+<div class="nb-cell html" name="htm17">
+consulta 4: Los pares de numeros que suman 3
+</div>
+
+<div class="nb-cell query" name="q14">
+suma(X, Y, s(s(s(0)))).
+</div>
+
+<div class="nb-cell html" name="htm18">
+consulta 5: Numeros que sumados a si mismos den 3
+</div>
+
+<div class="nb-cell query" name="q15">
+suma(X, X, s(s(s(0)))).
+</div>
+
+<div class="nb-cell html" name="htm19">
+consulta 6: Algun numero que sumado con otro de 3
+</div>
+
+<div class="nb-cell query" name="q16">
+suma(X, _, s(s(s(0)))).
+</div>
+
+<div class="nb-cell html" name="htm20">
+Pruebe ahora el ejercicio inverso: escriba las consultas en Prolog asociadas
+con las descripciones dadas.
+</div>
+
+<div class="nb-cell html" name="htm21">
+consulta 7: ¿existe algún natural tal que sumado consigo mismo da 2? ¿Cuál(es)?
+</div>
+
+<div class="nb-cell query" name="q17">
+suma(X,X,s(s(0))).
+</div>
+
+<div class="nb-cell html" name="htm22">
+consulta 8: ¿Hay naturales menores o iguales que 3? ¿Cuál(es)?
+</div>
+
+<div class="nb-cell query" name="q18">
+suma(X,_,s(s(s(0)))).
+</div>
+
+<div class="nb-cell html" name="htm23">
+<h5> <strong>2.4. Uso de <code>suma/3</code> para implementar otros predicados </strong></h5>
+
+Utilice exclusivamente el predicado <code>suma/3</code> para 
+implementar los dos siguientes predicados lógicos puros (pista: inspírese en algunas
+de las consultas anteriores). A continuación, pruebe su 
+funcionamiento mediante consultas adecuadas (al menos tres consultas para
+cada uno de ellos, variando las condiciones de entrada/salida de los argumentos).
+</div>
+
+<div class="nb-cell program" name="p2">
+% par(?X)
+% cierto si X es un natural par
+% (predicado lógico puro, sin usar la aritmética de Prolog)
+
+suma(X,0,X).
+suma(X,s(Y),s(Z)) :- 
+    suma(X,Y,Z).
+
+par(X):-
+    suma(Y,Y,X).
+
+</div>
+
+<div class="nb-cell query" name="q21">
+par(s(s(0))).
+</div>
+
+<div class="nb-cell query" name="q20">
+
+</div>
+
+<div class="nb-cell query" name="q19">
+
+</div>
+
+<div class="nb-cell program" name="p3">
+% menorig(?X, ?Y)
+% cierto si X e Y son naturales y X es menor o igual que Y
+% (predicado lógico puro, sin usar la aritmética de Prolog)
+suma(X,0,X).
+suma(X,s(Y),s(Z)) :- 
+    suma(X,Y,Z).
+
+menorig(X,Y):-
+    suma(X,_,Y).
+
+</div>
+
+<div class="nb-cell query" name="q24">
+menorig(s(0),s(s(0))).
+</div>
+
+<div class="nb-cell query" name="q23">
+
+</div>
+
+<div class="nb-cell query" name="q22">
+
+</div>
+
+<div class="nb-cell html" name="htm24">
+<h4><strong> 3. Genealogía</strong></h4>
+
+Uno de los ejemplos más habituales para iniciarse en el manejo del 
+lenguaje Prolog es el de las relaciones familiares. En el programa 
+que se incluye a continuación se facilitan las implementaciones
+de algunos predicados básicos, y se pide la implementación de otros. 
+Eche un vistazo al programa y continue leyendo lo que viene a continuación.
+</div>
+
+<div class="nb-cell program" data-background="true" name="p4">
+% PREDICADOS BÁSICOS
+
+% progenitor(?X, ?Y)
+% Cierto si X es progenitora o progenitor de Y
+progenitor(pepa, pepe1).
+progenitor(pepe, pepe1).
+progenitor(pepe, pepa2).
+progenitor(pepe1, pepa11).
+progenitor(pepe1, pepa12).
+progenitor(pepa12, pepe121).
+
+% mujer(?X)
+% Cierto si X es una mujer
+mujer(pepa).
+mujer(pepa2).
+mujer(pepa11).
+mujer(pepa12).
+
+% varon(?X)
+% Cierto si X es un varón
+varon(pepe).
+varon(pepe1).
+varon(pepe121).
+
+%% PREDICADOS QUE DEBE IMPLEMENTAR
+
+% madre(?X,?Y), cierto si X es madre de Y.
+madre(X,Y):-
+    mujer(X),
+    progenitor(X,Y).
+
+% madre(?X), cierto si X es madre.
+madre(X):-
+    madre(X,_).
+
+% hija(?X,?Y), cierto si X es una hija de Y.
+hija(X,Y):-
+    mujer(X),
+    progenitor(Y,X).
+
+% abuelo(?X,?Y), cierto si X es abuelo (varón) de Y.
+abuelo(X,Y):-
+    varon(X),
+    progenitor(X,Z),
+    progenitor(Z,Y).
+
+% hermana(?X,?Y), cierto si X es hermana de Y.
+hermana(X,Y):-
+    X \= Y,
+    mujer(X),
+    progenitor(Z,X),
+    progenitor(Z,Y).
+
+% tia(?X,?Y), cierto si X es tía de Y.
+tia(X,Y):-
+    progenitor(Z,Y),
+    hermana(X,Z).
+
+% ancestro(?X,?Y), cierto si X es un ancestro 
+% (mujer o varón) de Y.
+ancestro(X,Y):-
+    progenitor(X,Y).
+
+ancestro(X,Y):-
+    progenitor(Z,Y),
+    ancestro(X,Z).
+    
+
+% pariente(?X,?Y), cierto si X es un pariente 
+% (mujer o varón) de Y.
+pariente(X,Y):-
+    X \= Y,
+    ancestro(Z,X),
+    ancestro(Z,Y).
+
+</div>
+
+<div class="nb-cell html" name="htm26">
+<h5> <strong>3.1. Realización de algunas consultas </strong></h5>
+Utilice exclusivamente los predicados <code>progenitor</code>, 
+<code>mujer</code> y <code>varon</code> para realizar las consultas
+que se indican a continuación:
+</div>
+
+<div class="nb-cell html" name="htm25">
+¿Es pepa la madre de pepa2?
+</div>
+
+<div class="nb-cell query" name="q25">
+mujer(pepa),progenitor(pepa,pepa2).
+</div>
+
+<div class="nb-cell html" name="htm27">
+¿Quién es la madre de pepe1?
+</div>
+
+<div class="nb-cell query" name="q26">
+mujer(X),progenitor(X,pepe1).
+</div>
+
+<div class="nb-cell html" name="htm28">
+¿Quiénes son los progenitores de pepe1?
+</div>
+
+<div class="nb-cell query" name="q27">
+progenitor(X,pepe1).
+</div>
+
+<div class="nb-cell html" name="htm29">
+¿Tiene pepe1 hijos varones? ¿Quién o quiénes son?
+</div>
+
+<div class="nb-cell query" name="q28">
+progenitor(pepe1,Hijo),varon(Hijo).
+</div>
+
+<div class="nb-cell html" name="htm30">
+¿Quiénes son mujeres?
+</div>
+
+<div class="nb-cell query" name="q29">
+mujer(X).
+</div>
+
+<div class="nb-cell html" name="htm31">
+¿Tiene pepa algún nieto varón? ¿Quién o quiénes son?
+</div>
+
+<div class="nb-cell query" name="q30">
+progenitor(pepa,Z),progenitor(Z,Y), varon(Y).
+</div>
+
+<div class="nb-cell html" name="htm32">
+¿Quiénes son progenitores comunes de pepa11 y pepa12?
+</div>
+
+<div class="nb-cell query" name="q31">
+hermana(pepa,pepa).
+</div>
+
+<div class="nb-cell html" name="htm33">
+<h5> <strong>3.2. Implementación de algunos predicados </strong></h5>
+
+Implemente los predicados solicitados más arriba teniendo en 
+cuenta lo siguiente:
+<ul>
+<li> impleméntelos de
+uno en uno, comprobando que no tienen errores sintácticos ni
+  semánticos mediante la realización de consultas adecuadas.
+  </li>
+
+<li> Los nuevos predicados deben definirse mediante
+*reglas* que sean válidas independientemente del
+contenido concreto que tengan los predicados
+"progenitor", "mujer" y "varón", y no
+mediante hechos que habría que actualizar si cambiasen los
+datos actuales. Por ejemplo, una forma de definir el
+predicado binario "madre(?X,?Y)" sería la siguiente:
+
+<pre><code>
+%madre(?X,?Y), cierto si X es madre de Y. 
+% versión INADECUADA
+madre(pepa, pepe1).
+madre(pepa12, pepe121).
+  </code>
+</pre>
+  
+Esta definición es correcta respecto a la definición actual
+de los predicados "progenitor" y "mujer", pero
+podría dejar de serlo si estos cambian.
+
+Una forma mucho más adecuada de definir el predicado
+"madre" es hacerlo teniendo en cuenta su definición
+para el caso general: para cualesquiera dos personas X e
+Y, X será la madre de Y si resulta que X es
+progenitor de Y y además X es mujer:
+
+<pre><code>
+%madre(?X,?Y), cierto si X es madre de Y.
+% versión ADECUADA
+    madre(X,Y) :-
+        progenitor(X,Y),
+        mujer(X).
+ </code>
+</pre>
+
+A diferencia de la anterior, esta definición siempre dará la
+información correcta independientemente del contenido
+concreto de los predicados "progenitor" y "mujer".
+  </li>
+  
+  <li>
+Al implementar el predicado "hermana", tenga en cuenta
+que nadie es hermana de sí misma, es decir, una consulta del
+estilo "?- hermana(pepa,pepa)" debe devolver
+falso. El comportamiento anterior se puede conseguir usando
+adecuadamente el predicado predefinido "X \= Y", cierto
+si "X" no unifica con "Y".
+ </li>
+
+<li>
+  Para poder implementar el predicado "pariente" es
+necesario tener claro qué se entiende por ``X es pariente
+de Y''. Una posibilidad sería la siguiente: X es
+pariente de Y si se da cualquiera de las tres siguientes
+condiciones: (1) x es ancestro de Y, o bien (2) Y es
+ancestro de X, o bien (3) X e Y tienen un ancestro
+común (este último sería el caso de hermanos, primos, etc).
+Esta definición, expresada en Prolog, da lugar a tres
+reglas. Tenga en cuenta además que, al igual que en la
+definición del predicado "hermana", nadie debería ser
+pariente de sí mismo.
+  </li>
+  
+</ul>
+</div>
+
+<div class="nb-cell html" name="htm35">
+<h4><strong> 4. El orden importa + uso del depurador</strong></h4>
+
+En los apuntes se ha explicado cómo tanto el orden de las cláusulas en un programa 
+como el orden de los predicados en el cuerpo de una regla pueden influir en qué
+soluciones se encuentran, en qué orden aparecen y en la terminación o no de las
+consultas que se realizan. En este apartado se pretende que experimente con ello y
+con el uso del depurador de SWI-Prolog a través del ejemplo dado en los apuntes,
+que propone las siguientes cuatro posibles implementaciones para el predicado <code>ancestro(?X,?Y)</code>,
+cierto si X es ancestro de Y:
+</div>
+
+<div class="nb-cell program" data-background="true" name="p5">
+% progenitor_a(?X, ?Y): cierto si X es progenitor/a de Y
+progenitor_a(pepa, pepito).
+progenitor_a(pepito, pepon).
+
+% ancestro(?X, ?Y): cierto si X es un ancestro de Y
+% VERSIÓN 1: caso base en primer lugar, recursión a la 
+% derecha (recursión final o recursión de cola)
+ancestro1(X, Y) :-
+	progenitor_a(X, Y).
+ancestro1(X, Y) :-
+	progenitor_a(X, Z),
+	ancestro1(Z, Y).
+
+% VERSIÓN 2: caso base en último lugar, recursión a la 
+% derecha (recursión final o recursión de cola)
+ancestro2(X, Y) :-
+	progenitor_a(X, Z),
+	ancestro2(Z, Y).
+ancestro2(X, Y) :-
+	progenitor_a(X, Y).
+
+% VERSIÓN 3: caso base en primer lugar, recursión a la 
+% izquierda
+ancestro3(X, Y) :-
+	progenitor_a(X, Y).
+ancestro3(X, Y) :-
+	ancestro3(Z, Y),
+	progenitor_a(X, Z).
+
+% VERSIÓN 4: caso base en último lugar, recursión a la 
+% izquierda
+ancestro4(X, Y) :-
+	ancestro4(Z, Y),
+	progenitor_a(X, Z).
+ancestro4(X, Y) :-
+	progenitor_a(X, Y).
+</div>
+
+<div class="nb-cell html" name="htm34">
+Las cuatro versiones anteriores son equivalentes desde un punto
+de vista lógico, pero no se comportan igual en Prolog, como
+puede comprobar a continuación ejecutando la consulta 
+"¿De quién(es) es ancestro pepa?" con cada una de las cuatro 
+versiones.
+</div>
+
+<div class="nb-cell query" name="q32">
+ancestro1(pepa, D).
+</div>
+
+<div class="nb-cell query" name="q33">
+ancestro2(pepa, D).
+</div>
+
+<div class="nb-cell query" name="q34">
+ancestro3(pepa, D).
+</div>
+
+<div class="nb-cell query" name="q35">
+ancestro4(pepa, D).
+</div>
+
+<div class="nb-cell html" name="htm36">
+Para algunas de las consultas anteriores, compruebe el porqué 
+de las respuestas obtenidas construyendo sobre papel los 
+árboles de Resolución correspondientes (puede cotejarlos con 
+los dibujados en los apuntes) y utilice luego el depurador
+de errores para seguir paso a paso la construcción del árbol 
+de Resolución por parte de Prolog. Para invocar al depurador 
+en SWISH basta con escribir la palabra "trace, ” (con una
+coma detrás) antes de la 
+consulta y seguir la ejecución con los botones ofrecidos. 
+Por ejemplo:
+</div>
+
+<div class="nb-cell query" name="q36">
+trace, ancestro1(pepa, D).
+</div>
+
+<div class="nb-cell query" name="q37">
+trace, ancestro3(pepa, D).
+</div>
+
+<div class="nb-cell html" name="htm37">
+Recuerde por último que no existe una regla unviersal sobre cómo
+ordenar las cláusulas de un programa ni los predicados dentro
+del cuerpo de una regla, pero en general son útiles las dos
+siguientes recomendaciones:
+<ol>
+  <li> Casos base primero.
+  </li><li> Recursión a la derecha (cuando sea posible).
+</li></ol>
+La única de las cuatro versiones anteriores que cumple ambas 
+recomendaciones es la primera.
+</div>
+
+</div>

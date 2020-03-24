@@ -27,3 +27,5 @@ producto(_,0,0).
 producto(X,s(Y),V) :-
     producto(X,Y,Z),
     suma(Z,X,V).
+
+%Cambio en otro lado
